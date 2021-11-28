@@ -10,13 +10,13 @@ class DQN:
         super(DQN, self).__init__()
         self.device = device
         self.gamma = gamma
-        self.policy_network = Net(h, w, outputs, device)
-        self.target_network = Net(h, w, outputs, device)
+        self.policy_network = Net(h, w, outputs).to(device)
+        self.target_network = Net(h, w, outputs).to(device)
         self.target_network.load_state_dict(self.policy_network.state_dict())
         self.target_network.eval()
         self.optimizer = torch.optim.RMSprop(self.policy_network.parameters())
         self.memory = ReplayMemory(10000)
-        self.batch_size=32
+        self.batch_size=128
 
     def push_to_memory(self, cur_state: FloatTensor, action: int, next_state: FloatTensor, reward: FloatTensor):
         self.memory.push(cur_state, action, next_state, reward)            
@@ -50,9 +50,10 @@ class DQN:
             loss.backward()
             # whats this?
             for param in self.policy_network.parameters():
+                # print(param.grad)
                 param.grad.data.clamp_(-1, 1)
             self.optimizer.step()
-            print(loss)
+            # print(loss)
     
     def update_target_network(self):
         self.target_network.load_state_dict(self.policy_network.state_dict())

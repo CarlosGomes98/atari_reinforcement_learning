@@ -4,9 +4,8 @@ import torch.nn.functional as F
 
 
 class Net(nn.Module):
-    def __init__(self, h:int, w:int, outputs:int, device:torch.device):
+    def __init__(self, h:int, w:int, outputs:int):
         super(Net, self).__init__()
-        self.device = device
         self.conv1 = nn.Conv2d(3, 16, kernel_size=5, stride=2)
         self.bn1 = nn.BatchNorm2d(16)
         self.conv2 = nn.Conv2d(16, 32, kernel_size=5, stride=2)
@@ -22,7 +21,6 @@ class Net(nn.Module):
         self.head = nn.Linear(linear_input_size, outputs)
 
     def forward(self, x):
-        x = x.to(self.device)
         x = F.relu(self.bn1(self.conv1(x)))
         x = F.relu(self.bn2(self.conv2(x)))
         x = F.relu(self.bn3(self.conv3(x)))

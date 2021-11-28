@@ -61,7 +61,7 @@ for episode in range(episodes):
     past_screens.clear()
     past_screens.push(screen_reader.get_screen())
     past_screens.push(screen_reader.get_screen())
-    cur_state = past_screens.make_stupid_state()
+    cur_state = past_screens.make_stupid_state().to(device)
     for step in count():
         action = actor.get_action(cur_state, total_steps)
         _, reward, done, _ = env.step(action.item())
@@ -71,7 +71,7 @@ for episode in range(episodes):
             next_state = None
         else:
             past_screens.push(screen_reader.get_screen())
-            next_state = past_screens.make_stupid_state()
+            next_state = past_screens.make_stupid_state().to(device)
 
         actor.push_to_memory(cur_state, action, next_state, reward)
         state = next_state
