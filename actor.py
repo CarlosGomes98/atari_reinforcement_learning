@@ -8,7 +8,6 @@ from memory import ReplayMemory, Transition
 class Actor:
     def __init__(self, model:DQN, eps_end:float, eps_start:float, eps_decay:float, device: torch.device, n_actions: int):
         self.model = model
-        self.memory = ReplayMemory(10000)
         self.eps_end = eps_end
         self.eps_start = eps_start
         self.eps_decay = eps_decay
@@ -26,7 +25,4 @@ class Actor:
             return torch.tensor([[random.randrange(self.n_actions)]], device=self.device, dtype=torch.long)
 
     def push_to_memory(self, cur_state: FloatTensor, action: int, next_state: FloatTensor, reward: FloatTensor):
-        self.model.push_to_memory(cur_state, action, next_state, reward)            
-    
-    def get_memory(self):
-        return self.memory
+        self.model.push_to_memory(cur_state, action, next_state, reward)

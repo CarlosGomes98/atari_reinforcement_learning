@@ -74,7 +74,7 @@ for episode in range(episodes):
             next_state = past_screens.make_stupid_state().to(device)
 
         actor.push_to_memory(cur_state, action, next_state, reward)
-        state = next_state
+        cur_state = next_state
 
         model.optimize()
 

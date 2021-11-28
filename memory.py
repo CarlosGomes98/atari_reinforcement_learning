@@ -52,5 +52,5 @@ class ScreenMemory():
     
     def make_stupid_state(self):
         if len(self.memory) == 1:
-            return self.memory[0]
-        return self.memory[0] - self.memory[1]
+            return self.memory[0] - self.memory[0]
+        return self.memory[1] - self.memory[0]
