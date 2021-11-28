@@ -16,7 +16,7 @@ class DQN:
         self.target_network.eval()
         self.optimizer = torch.optim.RMSprop(self.policy_network.parameters())
         self.memory = ReplayMemory(10000)
-        self.batch_size=32
+        self.batch_size = 32
 
     def push_to_memory(self, cur_state: FloatTensor, action: int, next_state: FloatTensor, reward: FloatTensor):
         self.memory.push(cur_state, action, next_state, reward)            
@@ -59,4 +59,6 @@ class DQN:
     
     def get_best_action(self, state:torch.Tensor):
         # use argmax instead?
-        return self.policy_network(state).max(1)[1].view(1, 1)
+        prediction = self.policy_network(state).max(1)[1].view(1, 1)
+        print(prediction)
+        return prediction
