@@ -34,10 +34,10 @@ class ScreenMemory():
     def __init__(self, capacity: int, h:int, w: int):
         self.memory = deque([], maxlen=capacity)
         self.capacity = capacity
-        self.empty_screen = torch.zeros(3, h, w, dtype=torch.float).unsqueeze(0)
+        self.empty_screen = torch.zeros(1, 1, h, w, dtype=torch.float)
     
     def make_state(self):
-        return torch.cat(self.padded_memory())
+        return torch.cat(self.padded_memory(), dim=1)
     
     def padded_memory(self):
         if len(self.memory) >= self.capacity:

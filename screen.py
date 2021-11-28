@@ -10,6 +10,7 @@ class ScreenReader:
     def __init__(self, env:gym.Env):
         self.env = env
         self.resize = T.Compose([T.ToPILImage(),
+                        T.Grayscale(),
                         T.Resize(40, interpolation=Image.CUBIC),
                         T.ToTensor()])
 

@@ -61,5 +61,5 @@ class DQN:
     def get_best_action(self, state:torch.Tensor):
         # use argmax instead?
         prediction = self.policy_network(state).max(1)[1].view(1, 1)
-        print(prediction)
+        # print(prediction)
         return prediction

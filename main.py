@@ -1,7 +1,6 @@
 import torch
 import gym
 import numpy as np
-import matplotlib
 import matplotlib.pyplot as plt
 from itertools import count
 from memory import ScreenMemory
@@ -17,11 +16,6 @@ eps_decay = 200
 target_update = 10
 env = gym.make('CartPole-v0').unwrapped
 n_actions = env.action_space.n
-
-# set up matplotlib
-is_ipython = 'inline' in matplotlib.get_backend()
-if is_ipython:
-    from IPython import display
 
 plt.ion()
 
@@ -43,9 +37,6 @@ def plot_durations():
         plt.plot(means.numpy())
 
     plt.pause(0.001)  # pause a bit so that plots are updated
-    if is_ipython:
-        display.clear_output(wait=True)
-        display.display(plt.gcf())
 
 episode_durations = []
 total_steps = 0
@@ -60,8 +51,7 @@ for episode in range(episodes):
     env.reset()
     past_screens.clear()
     past_screens.push(screen_reader.get_screen())
-    past_screens.push(screen_reader.get_screen())
-    cur_state = past_screens.make_stupid_state().to(device)
+    cur_state = past_screens.make_state().to(device)
     for step in count():
         action = actor.get_action(cur_state, total_steps)
         _, reward, done, _ = env.step(action.item())
@@ -71,7 +61,7 @@ for episode in range(episodes):
             next_state = None
         else:
             past_screens.push(screen_reader.get_screen())
-            next_state = past_screens.make_stupid_state().to(device)
+            next_state = past_screens.make_state().to(device)
 
         actor.push_to_memory(cur_state, action, next_state, reward)
         cur_state = next_state
