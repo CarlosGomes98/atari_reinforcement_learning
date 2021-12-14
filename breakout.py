@@ -6,7 +6,7 @@ from itertools import count
 from memory import ScreenMemory
 from actor import Actor
 from model import DQN
-from screen import ScreenReader
+from screen import ScreenReader, BreakoutScreenReader
 from utils import plot_durations
 
 episodes = 10000
@@ -15,7 +15,7 @@ eps_start = 0.9
 eps_end = 0.01
 eps_decay = 5000
 target_update = 100
-env = gym.make('CartPole-v1').unwrapped
+env = gym.make('Breakout-v0').unwrapped
 n_actions = env.action_space.n
 
 plt.ion()
@@ -26,7 +26,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 episode_durations = []
 total_steps = 0
 env.reset()
-screen_reader = ScreenReader(env)
+screen_reader = BreakoutScreenReader(env)
 init_screen = screen_reader.get_screen()
 _, _, screen_height, screen_width = init_screen.shape
 past_screens = ScreenMemory(4, screen_height, screen_width)

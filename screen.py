@@ -40,3 +40,18 @@ class ScreenReader:
         screen = torch.from_numpy(screen)
         # Resize, and add a batch dimension (BCHW)
         return self.resize(screen).unsqueeze(0)
+
+class BreakoutScreenReader:
+    def __init__(self, env:gym.Env):
+        self.env = env
+        self.transform = T.Compose([T.ToPILImage(),
+                        T.Grayscale(),
+                        T.Resize(200, interpolation=Image.CUBIC),
+                        T.ToTensor()])
+    def get_screen(self):
+        screen = self.env.render(mode='rgb_array').transpose((2, 0, 1))
+        self.env.render()
+        screen = np.ascontiguousarray(screen, dtype=np.float32) / 255
+        screen = screen[20:300, 0:200]  # crop off score
+        screen = torch.from_numpy(screen)
+        return self.transform(screen).unsqueeze(0)

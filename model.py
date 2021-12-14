@@ -14,7 +14,7 @@ class DQN:
         self.target_network = Net(h, w, outputs).to(device)
         self.target_network.load_state_dict(self.policy_network.state_dict())
         self.target_network.eval()
-        self.optimizer = torch.optim.RMSprop(self.policy_network.parameters())
+        self.optimizer = torch.optim.Adam(self.policy_network.parameters(), lr=1e-4)
         self.memory = ReplayMemory(10000)
         self.batch_size=128
 
